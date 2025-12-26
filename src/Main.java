@@ -9,12 +9,12 @@ public class Main {
         Patient p2 = new Patient("910715864521", "Nursultan K.", "O-"); // adult
         Patient p3 = new Patient("150715431265", "Dana S.", "B+"); // minor
 
-        // Patient through setters
+        // Patient created via setters
         Patient p4 = new Patient(); // default
         p4.setIin("051215431265");
         p4.setFullName("Alik N.");
         p4.setBloodType("AB+");
-        p4.setAge(p4.calculateAgeFromIIN()); // calculate age automatically
+        p4.setAge(p4.calculateAgeFromIIN()); // calculate age from IIN
 
         // 2. Create doctors
         Doctor d1 = new Doctor("850403238546", "Dr. Alimov", "Surgeon", 7);
@@ -43,7 +43,7 @@ public class Main {
 
         System.out.println();
 
-        // 6. Display appointments with minor check
+        // 6. Display appointments (minor patients handled)
         System.out.println(" --- APPOINTMENTS --- ");
         printAppointment(a1);
         printAppointment(a2);
@@ -58,10 +58,11 @@ public class Main {
         System.out.println("After reschedule: " + a4);
         System.out.println();
 
-        // 8. Complete appointment a1
+        // 8. Complete appointment a1 -> bonus added to doctor
         System.out.println(" --- COMPLETE APPOINTMENT 4001 --- ");
         a1.complete();
         System.out.println(a1);
+        System.out.println("Doctor bonus after completion: " + d1.getTotalBonus());
         System.out.println();
 
         // 9. Cancel appointment a2
@@ -86,8 +87,8 @@ public class Main {
         System.out.println();
 
         System.out.println("Doctors:");
-        System.out.println(d1);
-        System.out.println(d2);
+        System.out.println(d1 + " | Total bonus: $" + d1.getTotalBonus());
+        System.out.println(d2 + " | Total bonus: $" + d2.getTotalBonus());
         System.out.println();
 
         System.out.println("Appointments:");

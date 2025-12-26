@@ -6,12 +6,13 @@ public class Appointment {
     private Doctor doctor;
     private LocalDateTime dateTime;
     private String status; // "Scheduled", "Completed", "Cancelled"
+    private double bonusPerAppointment; // bonus for this appointment
 
     // Constructor with parameters
     public Appointment(int appointmentId, Patient patient, Doctor doctor,
                        LocalDateTime dateTime, String status, double bonusPerAppointment) {
-
         this.appointmentId = appointmentId;
+        this.bonusPerAppointment = bonusPerAppointment;
 
         if (patient.isMinor()) {
             System.out.println("Error: Minor patients cannot book an appointment!");
@@ -24,11 +25,6 @@ public class Appointment {
             this.doctor = doctor;
             this.dateTime = dateTime;
             this.status = status;
-
-            // Add bonus to doctor if scheduled
-            if (status.equalsIgnoreCase("Scheduled")) {
-                doctor.addAppointmentBonus(bonusPerAppointment);
-            }
         }
     }
 
@@ -39,6 +35,7 @@ public class Appointment {
         this.doctor = new Doctor();
         this.dateTime = LocalDateTime.now();
         this.status = "Scheduled";
+        this.bonusPerAppointment = 0;
     }
 
     // Getters
@@ -47,6 +44,7 @@ public class Appointment {
     public Doctor getDoctor() { return doctor; }
     public LocalDateTime getDateTime() { return dateTime; }
     public String getStatus() { return status; }
+    public double getBonusPerAppointment() { return bonusPerAppointment; }
 
     // Setters
     public void setAppointmentId(int appointmentId) { this.appointmentId = appointmentId; }
@@ -62,6 +60,7 @@ public class Appointment {
     public void setDoctor(Doctor doctor) { this.doctor = doctor; }
     public void setDateTime(LocalDateTime dateTime) { this.dateTime = dateTime; }
     public void setStatus(String status) { this.status = status; }
+    public void setBonusPerAppointment(double bonus) { this.bonusPerAppointment = bonus; }
 
     // Methods
     public void reschedule(LocalDateTime newDateTime) {
@@ -74,9 +73,13 @@ public class Appointment {
         this.status = "Cancelled";
     }
 
+    // COMPLETE appointment and add bonus to doctor
     public void complete() {
         if (!status.equalsIgnoreCase("Cancelled")) {
             this.status = "Completed";
+            if (doctor != null && bonusPerAppointment > 0) {
+                doctor.addAppointmentBonus(bonusPerAppointment);
+            }
         }
     }
 
@@ -86,11 +89,12 @@ public class Appointment {
 
     @Override
     public String toString() {
-        return "Appointment{appointmentId=" + appointmentId +
+        return "Appointment{ID=" + appointmentId +
                 ", patient='" + patient.getFullName() + '\'' +
                 ", doctor='" + doctor.getName() + '\'' +
                 ", dateTime=" + dateTime +
                 ", status='" + status + '\'' +
+                ", bonus=$" + bonusPerAppointment +
                 '}';
     }
 }

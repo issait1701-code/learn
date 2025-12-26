@@ -14,7 +14,7 @@ public class Doctor {
         this.name = name;
         this.specialization = specialization;
         this.experienceYears = experienceYears;
-        this.totalBonus = 0;
+        this.totalBonus = 0; // initialize bonus
     }
 
     // Default constructor
@@ -39,11 +39,8 @@ public class Doctor {
         int month = Integer.parseInt(iin.substring(2, 4));
         int day = Integer.parseInt(iin.substring(4, 6));
 
-        if (year <= LocalDate.now().getYear() % 100) {
-            year += 2000;
-        } else {
-            year += 1900;
-        }
+        if (year <= LocalDate.now().getYear() % 100) year += 2000;
+        else year += 1900;
 
         LocalDate birthDate = LocalDate.of(year, month, day);
         return Period.between(birthDate, LocalDate.now()).getYears();
@@ -63,24 +60,21 @@ public class Doctor {
 
     // Methods
     public boolean isExperienced() { return experienceYears >= 5; }
-
     public boolean canPerformSurgery() {
         return specialization.equalsIgnoreCase("surgeon") && experienceYears >= 3;
     }
-
     public boolean isEligibleForRetirement() {
         return getAge() >= 65;
     }
-
     public int yearsUntilRetirement() {
         int retirementAge = 65;
         int remaining = retirementAge - getAge();
         return remaining > 0 ? remaining : 0;
     }
 
-    // Bonus
+    // Bonus methods
     public void addAppointmentBonus(double amount) {
-        if (amount > 0) totalBonus += amount;
+        if (amount > 0) totalBonus += amount; // начисление премии
     }
 
     public String getBonusInfo() {
